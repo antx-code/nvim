@@ -1,0 +1,3 @@
+return {
+	{ "./telescope", enabled = false },
+}

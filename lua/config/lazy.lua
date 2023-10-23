@@ -24,7 +24,9 @@ require("lazy").setup({
 
 		-- import/override with your plugins
 		{ import = "plugins" },
+		{ "dstein64/vim-startuptime" },
 	},
+
 	defaults = {
 		-- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
 		lazy = true,
@@ -47,3 +49,9 @@ require("lazy").setup({
 		},
 	},
 })
+
+vim.keymap.set("n", "<leader>pl", ":Lazy<CR>", { noremap = true })
+require("utils.compile_run")
+require("utils.vertical_cursor_movement")
+local swap_ternary = require("utils.swap_ternary")
+vim.keymap.set("n", "<leader>st", swap_ternary.swap_ternary, { noremap = true })
