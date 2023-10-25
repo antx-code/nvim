@@ -1,3 +1,5 @@
+-- the Colemak layout is used for the mappings
+
 vim.g.mapleader = " "
 
 local mode_nv = { "n", "v" }

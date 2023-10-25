@@ -1,10 +1,13 @@
 return {
   {
-    "instant-markdown/vim-instant-markdown",
-    ft = { "markdown" },
-    build = "yarn install",
+    "iamcco/markdown-preview.nvim",
+    cmd = {
+      "MarkdownPreview",
+      "MarkdownPreviewStop",
+      "MarkdownPreviewToggle",
+    },
     config = function()
-      vim.g.instant_markdown_autostart = 0
+      vim.fn["mkdp#util#install"]()
     end,
   },
 }

@@ -1,163 +1,208 @@
-local m = { noremap = true, nowait = true }
-local M = {}
+return {
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        enabled = vim.fn.executable("make") == 1,
+        build = "make",
+      },
+      { "nvim-lua/plenary.nvim" },
+    },
+    config = function(_, opts)
+      local map = vim.keymap.set
+      local opts = { noremap = true, silent = true }
 
-M.config = {
-	{
-		"nvim-telescope/telescope.nvim",
-		-- tag = '0.1.1',
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			{
-				"LukasPietzschmann/telescope-tabs",
-				config = function()
-					local tstabs = require("telescope-tabs")
-					tstabs.setup({})
-					vim.keymap.set("n", "<c-t>", tstabs.list_tabs, {})
-				end,
-			},
-			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-			-- "nvim-telescope/telescope-ui-select.nvim",
-			"stevearc/dressing.nvim",
-			"dimaportenko/telescope-simulators.nvim",
-		},
-		config = function()
-			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<c-p>", builtin.find_files, m)
-			-- vim.keymap.set('n', '<c-f>', function()
-			-- 	builtin.grep_string({ search = "" })
-			-- end, m)
-			vim.keymap.set("n", "<leader>rs", builtin.resume, m)
-			vim.keymap.set("n", "<c-w>", builtin.buffers, m)
-			vim.keymap.set("n", "<c-h>", builtin.oldfiles, m)
-			vim.keymap.set("n", "<c-_>", builtin.current_buffer_fuzzy_find, m)
-			vim.keymap.set("n", "z=", builtin.spell_suggest, m)
+      -- Telescope key mappings for files and system tools
+      map("n", "<leader>ta", function()
+        require("telescope.builtin").find_files({
+          no_ignore = true,
+          hidden = true,
+          prompt_title = "All Files",
+        })
+      end, vim.tbl_extend("force", opts, { desc = "All files" }))
 
-			vim.keymap.set("n", "<leader>d", function()
-				builtin.diagnostics({
-					severity_sort = true,
-				})
-			end, m)
-			-- vim.keymap.set('n', 'gd', builtin.lsp_definitions, m)
-			-- vim.keymap.set('n', '<c-t>', builtin.lsp_document_symbols, {})
-			vim.keymap.set("n", "gi", builtin.git_status, m)
-			vim.keymap.set("n", ":", builtin.commands, m)
+      local telescope_cmds = {
+        -- ["<leader>tf"] = "Telescope find_files find_command=rg,--ignore,--hidden,--files",
+        ["<leader>tb"] = "Telescope buffers",
+        ["<leader>th"] = "Telescope help_tags",
+        ["<leader>tm"] = "Telescope marks",
+        ["<leader>tr"] = "Telescope registers",
+        ["<leader>tt"] = "Telescope treesitter",
+        ["<leader>tg"] = "Telescope git_status",
+        ["<leader>tgp"] = "Telescope git_files",
+        ["<leader>tgc"] = "Telescope git_commits",
+        ["<leader>tgb"] = "Telescope git_branches",
+        ["<leader>tgs"] = "Telescope git_status",
+        ["<leader>tgh"] = "Telescope git_stash",
+      }
 
-			local trouble = require("trouble.providers.telescope")
+      for k, cmd in pairs(telescope_cmds) do
+        map("n", k, "<cmd>" .. cmd .. "<cr>", vim.tbl_extend("force", opts, { desc = cmd }))
+      end
 
-			local ts = require("telescope")
-			local actions = require("telescope.actions")
-			M.ts = ts
-			ts.setup({
-				defaults = {
-					vimgrep_arguments = {
-						"rg",
-						"--color=never",
-						"--no-heading",
-						"--with-filename",
-						"--line-number",
-						"--column",
-						"--fixed-strings",
-						"--smart-case",
-						"--trim",
-					},
-					layout_config = {
-						width = 0.9,
-						height = 0.9,
-					},
-					mappings = {
-						i = {
-							["<C-h>"] = "which_key",
-							["<C-u>"] = "move_selection_previous",
-							["<C-e>"] = "move_selection_next",
-							["<C-l>"] = "preview_scrolling_up",
-							["<C-y>"] = "preview_scrolling_down",
-							["<esc>"] = "close",
-							["<C-n>"] = require("telescope.actions").cycle_history_next,
-							["<C-p>"] = require("telescope.actions").cycle_history_prev,
-						},
-					},
-					color_devicons = true,
-					prompt_prefix = "🔍 ",
-					selection_caret = " ",
-					path_display = { "truncate" },
-					file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-					grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-				},
-				pickers = {
-					buffers = {
-						show_all_buffers = true,
-						sort_lastused = true,
-						mappings = {
-							i = {
-								["<c-d>"] = actions.delete_buffer,
-							},
-						},
-					},
-				},
-				extensions = {
-					fzf = {
-						fuzzy = true,
-						override_generic_sorter = true,
-						override_file_sorter = true,
-						case_mode = "smart_case",
-					},
-					command_palette = command_palette,
-				},
-			})
-			require("dressing").setup({
-				select = {
-					get_config = function(opts)
-						if opts.kind == "codeaction" then
-							return {
-								backend = "telescope",
-								telescope = require("telescope.themes").get_cursor(),
-							}
-						end
-					end,
-				},
-			})
+      -- Telescope key mappings for general searching
+      local modes = { "n", "l" }
+      local search_cmds = {
+        ["<d-p>"] = "lua require('telescope').extensions.smart_open.smart_open({ cwd_only = true })",
+        ["<c-p>"] = "Telescope fd find_command=rg,--ignore,--hidden,--files,-F",
+        ["<d-,>"] = "Telescope live_grep find_command=rg,--ignore,--hidden,--files,-F",
+      }
 
-			ts.load_extension("yank_history")
-			ts.load_extension("dap")
-			ts.load_extension("telescope-tabs")
-			ts.load_extension("fzf")
-			ts.load_extension("simulators")
+      for k, cmd in pairs(search_cmds) do
+        for _, mode in ipairs(modes) do
+          map(mode, k, "<cmd>" .. cmd .. "<cr>", vim.tbl_extend("force", opts, { desc = cmd }))
+        end
+      end
 
-			require("simulators").setup({
-				android_emulator = false,
-				apple_simulator = true,
-			})
-			-- ts.load_extension("ui-select")
-			-- ts.load_extension("python")
-			local tsdap = ts.extensions.dap
-			-- vim.keymap.set("n", "<leader>'v", tsdap.variables, m)
-			-- vim.keymap.set("n", "<leader>'a", tsdap.commands, m)
-			-- vim.keymap.set("n", "<leader>'b", tsdap.list_breakpoints, m)
-			-- vim.keymap.set("n", "<leader>'f", tsdap.frames, m)
-		end,
-	},
-	{
-		"FeiyouG/commander.nvim",
-		config = function()
-			local commander = require("commander")
-			commander.setup({
-				telescope = {
-					enable = true,
-				},
-			})
-			vim.keymap.set("n", "<c-q>", require("commander").show, m)
-			commander.add({
-				{
-					desc = "Run Simulator",
-					cmd = "<CMD>Telescope simulators run<CR>",
-				},
-				{
-					desc = "Git diff",
-					cmd = "<CMD>Telescope git_status<CR>",
-				},
-			})
-		end,
-	},
+      local actions = require("telescope.actions")
+      require("telescope").setup({
+        extensions = {
+          smart_open = {
+            show_scores = false,
+            ignore_patterns = { "*.git/*", "*/tmp/*" },
+            match_algorithm = "fzf",
+            disable_devicons = false,
+            cwd_only = true,
+          },
+          fzf = {
+            fuzzy = true, -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+          },
+        },
+
+        defaults = {
+          -- dont ignore will cause lsp to not work
+          -- file_ignore_patterns = {
+          -- ".git",
+          -- ".cache",
+          -- "%.o",
+          -- "%.a",
+          -- "%.out",
+          -- "%.class",
+          -- "%.pdf",
+          -- "%.mkv",
+          -- "%.mp4",
+          -- "%.zip",
+          -- },
+
+          -- file_sorter = require("util.sorter").frecency_sorter,
+          git_worktrees = vim.g.git_worktrees,
+          dynamic_preview_title = true,
+          path_display = {
+            shorten = { len = 3, exclude = { 1, -1 } },
+
+            truncate = true,
+          },
+          -- path_display = function(opts, path)
+          --   local tail = require("telescope.utils").path_tail(path)
+          --   return string.format("%s\n%s", tail, path)
+          -- end,
+          sorting_strategy = "ascending",
+          layout_config = {
+            horizontal = {
+              prompt_position = "top",
+              preview_width = 0.55,
+            },
+            vertical = { mirror = false },
+            width = 0.87,
+            height = 0.80,
+            preview_cutoff = 120,
+          },
+          mappings = {
+            i = {
+              ["<C-n>"] = actions.cycle_history_next,
+              ["<C-p>"] = actions.cycle_history_prev,
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<esc>"] = actions.close,
+            },
+            n = { q = actions.close },
+          },
+        },
+      })
+      require("telescope").load_extension("fzf")
+      require("telescope").load_extension("file_browser")
+    end,
+  },
+  {
+    "danielfalk/smart-open.nvim",
+    branch = "0.2.x",
+    event = "VeryLazy",
+    config = function()
+      require("telescope").load_extension("smart_open")
+    end,
+    dependencies = {
+      "kkharji/sqlite.lua",
+      "nvim-telescope/telescope.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      { "nvim-telescope/telescope-fzy-native.nvim" },
+    },
+  },
+  {
+    "prochri/telescope-all-recent.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    event = "VeryLazy",
+    config = function()
+      require("telescope-all-recent").setup({
+        database = {
+          folder = vim.fn.stdpath("data"),
+          file = "telescope-all-recent.sqlite3",
+          max_timestamps = 10,
+        },
+        debug = false,
+        scoring = {
+          recency_modifier = { -- also see telescope-frecency for these settings
+            [1] = { age = 240, value = 100 }, -- past 4 hours
+            [2] = { age = 1440, value = 80 }, -- past day
+            [3] = { age = 4320, value = 60 }, -- past 3 days
+            [4] = { age = 10080, value = 40 }, -- past week
+            [5] = { age = 43200, value = 20 }, -- past month
+            [6] = { age = 129600, value = 10 }, -- past 90 days
+          },
+          -- how much the score of a recent item will be improved.
+          boost_factor = 0.0001,
+        },
+        default = {
+          disable = true, -- disable any unkown pickers (recommended)
+          use_cwd = true, -- differentiate scoring for each picker based on cwd
+          sorting = "recent", -- sorting: options: 'recent' and 'frecency'
+        },
+        pickers = { -- allows you to overwrite the default settings for each picker
+          man_pages = { -- enable man_pages picker. Disable cwd and use frecency sorting.
+            disable = false,
+            use_cwd = false,
+            sorting = "frecency",
+          },
+          ["commander#commander"] = {
+            disable = false,
+            use_cwd = false,
+            sorting = "recent",
+          },
+        },
+      })
+    end,
+  },
+  {
+    "eckon/treesitter-current-functions",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim" },
+    keys = {
+      { "<leader>tf", "<CMD>GetCurrentFunctions<CR>", desc = "Get current function" },
+    },
+  },
+
+  {
+    "piersolenski/telescope-import.nvim",
+    requires = "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    keys = {
+      { "<leader>ti", "<CMD>lua require('telescope').extensions.import.import()<CR>", desc = "Telescope Import" },
+    },
+    config = function()
+      require("telescope").load_extension("import")
+    end,
+  },
 }
-
-return M.config
