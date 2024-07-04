@@ -3,6 +3,7 @@ local split = function()
 	vim.cmd("sp")
 	vim.cmd("res -5")
 end
+
 local compileRun = function()
 	vim.cmd("w")
 	-- check file type
@@ -20,7 +21,7 @@ local compileRun = function()
 		vim.cmd("term luajit %")
 	elseif ft == "python" then
 		split()
-		vim.cmd("term python3 %")
+		vim.cmd("term poetry run python3 %")
 	elseif ft == "go" then
 		split()
 		vim.cmd("term go run %")

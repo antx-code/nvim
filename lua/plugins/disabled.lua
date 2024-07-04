@@ -1,15 +1,17 @@
-return {
-	{ "./cw/cw_copilot.lua", enabled = false },
-	{ "./cw/cw_indent.lua", enabled = false },
-	{ "./cw/cw_markdown.lua", enabled = false },
-	{ "./cw/cw_notify.lua", enabled = false },
-	{ "./cw/cw_snippets.lua", enabled = false },
-	{ "./cw/cw_statusline.lua", enabled = false },
-	{ "./cw/cw_telescope.lua", enabled = false },
-	{ "./cw/cw_treesitter.lua", enabled = false },
+-- 暂停使用的插件配置
 
-	{ "./innei/innei_colorscheme.lua", enabled = false },
-	{ "./innei/innei_snip.lua", enabled = false },
-	{ "./innei/innei_surround.lua", enabled = false },
-	{ "./innei/innei_yank.lua", enabled = false },
+return {
+	-- { "./cw/copilot.lua", enabled = false },
+	-- { "./cw/indent.lua", enabled = false },
+	-- { "./cw/markdown.lua", enabled = false },
+	-- { "./cw/notify.lua", enabled = false },
+	-- { "./cw/snippets.lua", enabled = false },
+	-- { "./cw/statusline.lua", enabled = false },
+	-- { "./cw/telescope.lua", enabled = false },
+	-- { "./cw/treesitter.lua", enabled = false },
+
+	-- { "./innei/colorscheme.lua", enabled = false },
+	-- { "./innei/snip.lua", enabled = false },
+	-- { "./innei/surround.lua", enabled = false },
+	-- { "./innei/yank.lua", enabled = false },
 }

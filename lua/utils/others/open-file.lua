@@ -8,7 +8,7 @@ vim.api.nvim_buf_set_keymap(
   _temp_buf,
   "i",
   "<CR>",
-  '<CMD>:lua require("plugin.open-file").jump()<CR>',
+  '<CMD>:lua require("utils.others.open-file").jump()<CR>',
   { noremap = true, silent = true }
 )
 

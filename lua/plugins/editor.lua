@@ -1,3 +1,18 @@
+-- 这个文件是用于配置 Neovim 编辑器的插件。它包含了一些插件的配置信息和初始化代码。
+-- 具体来说，这个文件做了以下几件事情：
+	-- 1. 定义了一个函数 s:MakePair()，用于在编辑器中自动补全一些字符对，比如在输入分号或逗号后自动补全相应的分号或逗号。
+	-- 2. 定义了一个键盘映射，将 <c-u> 绑定到调用 s:MakePair() 函数的操作。
+	-- 3. 配置了插件 "RRethy/vim-illuminate"，并设置了一些参数和样式。
+	-- 4. 配置了插件 "dkarter/bullets.vim"，并指定了一些文件类型。
+	-- 5. 配置了插件 "NvChad/nvim-colorizer.lua"，并设置了一些选项。
+	-- 6. 配置了插件 "theniceboy/antovim"，并定义了一些键盘映射。
+	-- 7. 配置了插件 "gcmt/wildfire.vim"。
+	-- 8. 配置了插件 "fedepujol/move.nvim"，并定义了一些键盘映射。
+	-- 9. 配置了插件 "gbprod/substitute.nvim"，并定义了一些键盘映射。
+	-- 10. 配置了插件 "kevinhwang91/nvim-ufo"，并设置了一些选项。
+	-- 11. 配置了插件 "windwp/nvim-autopairs"。
+-- 这些配置和初始化代码会在 Neovim 启动时被执行，以便插件能够正常工作和提供相应的功能。
+
 vim.cmd([[
 fun! s:MakePair()
 	let line = getline('.')

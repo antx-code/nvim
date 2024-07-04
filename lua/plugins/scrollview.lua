@@ -1,3 +1,34 @@
+-- 根据提供的代码，这个文件似乎是一个 Lua 脚本，用于配置一些与滚动和滚动条相关的插件。它通过调用不同的插件的 setup 函数来配置它们的行为。
+-- 具体来说，这个文件配置了以下几个插件：
+  -- 1. Aasim-A/scrollEOF.nvim：这个插件用于在文件末尾滚动时自动跳转到下一个文件。它的配置选项包括：
+    -- - pattern：用于确定在哪些文件类型中启用滚动到文件末尾的功能。
+    -- - insert_mode：确定是否在插入模式下启用滚动到文件末尾的功能。
+    -- - disabled_filetypes：禁用滚动到文件末尾功能的文件类型列表。
+    -- - disabled_modes：禁用滚动到文件末尾功能的模式列表。
+  -- 2. petertriho/nvim-scrollbar：这个插件用于在编辑器中显示滚动条。它的配置选项包括：
+    -- - show：确定是否显示滚动条。
+    -- - show_in_active_only：确定是否只在活动窗口中显示滚动条。
+    -- - set_highlights：确定是否设置滚动条的高亮。
+    -- - folds：处理折叠代码的方式，如果缓冲区中的行数超过指定的数量，则禁用折叠。
+    -- - max_lines：如果缓冲区中的行数超过指定的数量，则禁用滚动条。
+    -- - hide_if_all_visible：如果所有行都可见，则隐藏滚动条。
+    -- - throttle_ms：滚动条更新的延迟时间。
+    -- - handle：滚动条的样式和颜色配置。
+    -- - marks：滚动条上的标记配置。
+    -- - excluded_buftypes：禁用滚动条的缓冲区类型列表。
+    -- - excluded_filetypes：禁用滚动条的文件类型列表。
+    -- - autocmd：触发滚动条更新的自动命令列表。
+    -- - handlers：滚动条的事件处理配置。
+  -- 3. dstein64/nvim-scrollview：这个插件用于在编辑器中显示一个小窗口，显示当前光标位置在整个文件中的相对位置。它的配置选项包括：
+    -- - excluded_filetypes：禁用滚动视图的文件类型列表。
+    -- - winblend：滚动视图窗口的透明度。
+    -- - signs_on_startup：启动时显示的标记类型列表。
+    -- - diagnostics_error_symbol：诊断错误的标记符号。
+    -- - diagnostics_warn_symbol：诊断警告的标记符号。
+    -- - diagnostics_info_symbol：诊断信息的标记符号。
+    -- - diagnostics_hint_symbol：诊断提示的标记符号。
+-- 这些插件的配置选项可以根据个人喜好进行调整，以满足不同的需求。
+
 return {
   {
     "Aasim-A/scrollEOF.nvim",

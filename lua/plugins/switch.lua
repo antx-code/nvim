@@ -1,3 +1,11 @@
+-- 一个简单的 Vim 插件，用于使用预定义的替换来切换文本段
+
+-- 根据代码，这个文件的功能是配置一些插件，并定义了一些按键绑定和配置选项。具体来说：
+  -- 1. 第一个插件是 "AndrewRadev/switch.vim"，它在 Visual Studio Code 中启用了一个名为 "Switch" 的命令。按下 <leader>sx 键会调用 vim.cmd("Switch") 来执行该命令。
+  -- 2. 第二个插件是 "mizlan/iswap.nvim"，它提供了一些交换文本的功能。通过调用 require("iswap").setup({...}) 来配置插件的选项。
+  -- 3. 第三个插件是 "Wansmer/sibling-swap.nvim"，它提供了一些交换代码行的功能。通过调用 require("sibling-swap").setup({...}) 来配置插件的选项。
+-- 总体来说，这个文件的目的是为了增强编辑器的功能，使得在编写代码时更加方便和高效。
+
 return {
   {
     "AndrewRadev/switch.vim",

@@ -1,3 +1,26 @@
+-- 查找、过滤、预览、挑选。所有的lua，所有的时间。
+-- telescope.nvim 是一个高度可扩展的列表模糊查找器。基于 neovim 核心的最新出色功能构建。 Telescope 以模块化为中心，可以轻松定制。
+
+-- 这个文件是一个 Lua 脚本，用于配置和定制 Neovim 的 Telescope 插件。Telescope 是一个高度可扩展的列表模糊查找器，它可以帮助用户查找、过滤、预览和挑选文件等。这个文件中的代码主要完成以下功能：
+  -- 1. 导入 telescope.nvim 插件和其它依赖项。
+  -- 2. 配置 Telescope 的按键映射，包括文件和系统工具的快捷键。
+  -- 3. 配置 Telescope 的通用搜索快捷键。
+  -- 4. 设置 Telescope 的默认选项，包括路径显示、排序策略、布局配置等。
+  -- 5. 加载和配置 Telescope 的扩展，如 smart_open、fzf、file_browser、import 等。
+  -- 6. 配置 telescope-all-recent 扩展，用于最近文件的搜索和排序。
+  -- 7. 配置 treesitter-current-functions 扩展，用于获取当前函数。
+  -- 8. 配置 telescope-import 扩展，用于导入模块。
+-- 通过这些配置，用户可以在 Neovim 中使用 Telescope 插件进行更高效的文件和代码搜索。这个文件是一个 Lua 脚本，用于配置和定制 Neovim 的 Telescope 插件。Telescope 是一个高度可扩展的列表模糊查找器，它可以帮助用户查找、过滤、预览和挑选文件等。这个文件中的代码主要完成以下功能：
+  -- 1. 导入 telescope.nvim 插件和其它依赖项。
+  -- 2. 配置 Telescope 的按键映射，包括文件和系统工具的快捷键。
+  -- 3. 配置 Telescope 的通用搜索快捷键。
+  -- 4. 设置 Telescope 的默认选项，包括路径显示、排序策略、布局配置等。
+  -- 5. 加载和配置 Telescope 的扩展，如 smart_open、fzf、file_browser、import 等。
+  -- 6. 配置 telescope-all-recent 扩展，用于最近文件的搜索和排序。
+  -- 7. 配置 treesitter-current-functions 扩展，用于获取当前函数。
+  -- 8. 配置 telescope-import 扩展，用于导入模块。
+-- 通过这些配置，用户可以在 Neovim 中使用 Telescope 插件进行更高效的文件和代码搜索。
+
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -98,7 +121,7 @@ return {
             truncate = true,
           },
           -- path_display = function(opts, path)
-          --   local tail = require("telescope.utils").path_tail(path)
+          --   local tail = require("telescope.utils").path_tail(pat h)
           --   return string.format("%s\n%s", tail, path)
           -- end,
           sorting_strategy = "ascending",

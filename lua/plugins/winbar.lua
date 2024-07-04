@@ -1,3 +1,12 @@
+-- 适用于 Neovim 的精美、类似 IDE、高度可定制的 winbar
+-- 具有下拉菜单支持和多个后端
+
+-- 根据代码的注释和内容，这个文件实现了一个适用于 Neovim 的精美、类似 IDE、高度可定制的 winbar（窗口栏）插件。它具有下拉菜单支持和多个后端。
+	-- 在 config 函数中，通过调用 require("dropbar.api") 来获取 api 模块，并设置了一些按键映射。其中，<Leader>; 绑定了 api.pick 函数，[c 绑定了 api.goto_context_start 函数，]c 绑定了 api.select_next_context 函数。
+	-- 此外，还定义了一些辅助函数，如 confirm 和 quit_curr，用于处理点击和关闭操作。
+	-- 最后，调用了 require("dropbar").setup() 来配置插件的参数，包括菜单的快速导航、按键映射等。
+-- 总体来说，这个文件实现了一个功能强大且高度可定制的窗口栏插件，可以提供类似 IDE 的体验。根据代码的注释和内容，这个文件实现了一个适用于 Neovim 的精美、类似 IDE、高度可定制的 winbar（窗口栏）插件。它具有下拉菜单支持和多个后端。
+
 return {
 	"Bekaboo/dropbar.nvim",
 	commit = "19011d96959cd40a7173485ee54202589760caae",

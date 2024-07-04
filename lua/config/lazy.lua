@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 -- self-defined config files
 require("config.enviroments")
+require("utils.others.compile_run")
 
 require("lazy").setup({
 	spec = {
@@ -23,19 +24,37 @@ require("lazy").setup({
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
 
 		-- import any extras modules here
-		-- { import = "lazyvim.plugins.extras.lang.json" }
+		-- { import = "lazyvim.plugins.extras.lang.json" },
+		-- { import = "lazyvim.plugins.extras.lang.go" },
+		-- { import = "lazyvim.plugins.extras.lang.python" },
+		-- { import = "lazyvim.plugins.extras.lang.rust" },
+		-- { import = "lazyvim.plugins.extras.lang.markdown" },
+		-- { import = "lazyvim.plugins.extras.lang.yaml" },
+		-- { import = "lazyvim.plugins.extras.lang.docker" },
+		
+		-- { import = "lazyvim.plugins.extras.ui.alpha"  },
+		-- { import = "lazyvim.plugins.extras.lsp.none-ls", },
+		-- { import = "lazyvim.plugins.extras.formatting.prettier" },
+		-- { import = "lazyvim.plugins.extras.vscode" },
+    	-- { import = "lazyvim.plugins.extras.editor.navic" },
 
 		-- import/override with your plugins
+		{ import = "config.highlight" },
+		{ import = "config.ui" },
 		{ import = "plugins" },
 		{ "dstein64/vim-startuptime" },
 	},
 
 	defaults = {
 		-- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
+		-- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
 		lazy = true,
-		-- version = "*",
+		-- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
+    	-- have outdated releases, which may break your Neovim install.
 		version = false,
+		-- version = "*",
 	},
+	install = { colorscheme = { "catppuccin" } },
 	checker = { enabled = true }, -- automatically check for plugin updates
 	performance = {
 		rtp = {
@@ -53,9 +72,3 @@ require("lazy").setup({
 		},
 	},
 })
-
-vim.keymap.set("n", "<leader>pl", ":Lazy<CR>", { noremap = true })
-require("utils.compile_run")
-require("utils.vertical_cursor_movement")
-local swap_ternary = require("utils.swap_ternary")
-vim.keymap.set("n", "<leader>st", swap_ternary.swap_ternary, { noremap = true })

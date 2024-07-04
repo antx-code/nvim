@@ -1,3 +1,6 @@
+" 一个简单的 neovim 插件，让您选择在 neovim 中激活哪个虚拟环境。
+" 允许从 neovim 中选择 python 虚拟环境
+
 return {
   {
 		"linux-cultist/venv-selector.nvim",

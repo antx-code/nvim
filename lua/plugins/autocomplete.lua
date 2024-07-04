@@ -1,3 +1,12 @@
+-- 用 Lua 编码的 neovim 补全插件。
+
+-- 这个文件是一个 Lua 脚本，用于配置自动补全插件。它使用了 nvim-cmp 插件来实现自动补全功能，并且依赖其他插件来提供更多的补全源和功能。
+-- 该脚本定义了一些辅助函数，如 has_words_before 和 limitStr，用于判断光标前是否有单词和限制字符串长度。
+-- 接下来，定义了两个比较函数 lspkind_comparator 和 label_comparator，用于排序补全项。
+-- 然后，定义了一个 Lua 模块 M，其中包含了配置信息和配置函数。配置信息包括插件名称、加载顺序和依赖插件列表。配置函数 M.configfunc 用于设置自动补全的各种选项，包括预选项、排序、格式化、补全源和按键映射。
+-- 最后，返回了配置信息 M.config。
+-- 总体来说，这个文件的功能是配置自动补全插件 nvim-cmp，并且通过其他插件提供更多的补全源和功能。
+
 local has_words_before = function()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil

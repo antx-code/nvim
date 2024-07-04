@@ -191,3 +191,7 @@ vim.keymap.set("n", "<leader>q", function()
 		run_vim_shortcut([[<C-w>j:q<CR>]])
 	end
 end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>pl", ":Lazy<CR>", { noremap = true })
+local swap_ternary = require("utils.others.swap_ternary")
+vim.keymap.set("n", "<leader>ts", swap_ternary.swap_ternary, { noremap = true })

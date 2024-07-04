@@ -1,38 +1,9 @@
-local icons = {
-	Keyword = "󰌋",
-	Operator = "󰆕",
-
-	Text = "",
-	Value = "󰎠",
-	Constant = "󰏿",
-
-	Method = "",
-	Function = "󰊕",
-	Constructor = "",
-
-	Class = "",
-	Interface = "",
-	Module = "",
-
-	Variable = "",
-	Property = "󰜢",
-	Field = "󰜢",
-
-	Struct = "󰙅",
-	Enum = "",
-	EnumMember = "",
-
-	Snippet = "",
-
-	File = "",
-	Folder = "",
-
-	Reference = "󰈇",
-	Event = "",
-	Color = "",
-	Unit = "󰑭",
-	TypeParameter = "",
-}
+-- 这个文件是用于配置 Neovim 的 LSP（Language Server Protocol）插件的。LSP 是一种用于编辑器和语言服务器之间进行通信的协议，它可以提供代码补全、语法检查、跳转定义等功能。
+-- 这个文件中的代码主要做了以下几件事情：
+	-- 1. 定义了一个 Lua 表，包含了多个 LSP 插件的配置信息。
+	-- 2. 配置了一些自定义的函数和事件处理器，用于实现特定的功能，比如在光标停留时显示诊断信息、在打开文件时自动定位到定义等。
+	-- 3. 对一些插件的配置进行了扩展和修改，以满足特定的需求，比如配置 TypeScript 服务器的根目录、配置 Lspsaga 插件的界面样式等。
+-- 总体来说，这个文件的功能是配置和定制 Neovim 的 LSP 插件，以提供更好的代码编辑和开发体验。
 
 return {
 	{
@@ -68,9 +39,9 @@ return {
 				group = "lsp_diagnostics_hold",
 			})
 
-			opts.diagnostics = {
+			opts.diagnostics = vim.tbl_extend("force", opts.diagnostics, {
 				underline = true,
-				update_in_insert = false,
+				update_in_insert = true,
 				virtual_text = false,
 				-- virtual_text = {
 				--   spacing = 4,
@@ -82,11 +53,12 @@ return {
 				-- },
 				severity_sort = true,
 				signs = false,
-			}
+			})
 
-			opts.inlay_hints = {
-				enabled = true,
-			}
+			-- vim.diagnostic.config({ signs = false })
+			-- opts.inlay_hints = {
+			--   enabled = false,
+			-- }
 
 			opts.servers.tsserver = vim.tbl_extend("force", opts.servers.tsserver, {
 				root_dir = function(fname)
@@ -96,20 +68,20 @@ return {
 				end,
 			})
 
-			opts.servers.tsserver.settings = vim.tbl_extend("force", opts.servers.tsserver.settings, {
-				typescript = {
-					inlayHints = {
-						-- includeInlayParameterNameHints = "all",
-						-- includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-						-- includeInlayFunctionParameterTypeHints = false,
-						-- includeInlayVariableTypeHints = false,
-						-- includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-						-- includeInlayPropertyDeclarationTypeHints = false,
-						-- includeInlayFunctionLikeReturnTypeHints = false,
-						includeInlayEnumMemberValueHints = true,
-					},
-				},
-			})
+			-- opts.servers.tsserver.settings = vim.tbl_extend("force", opts.servers.tsserver.settings, {
+			--   typescript = {
+			--     inlayHints = {
+			--       -- includeInlayParameterNameHints = "all",
+			--       -- includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+			--       -- includeInlayFunctionParameterTypeHints = false,
+			--       -- includeInlayVariableTypeHints = false,
+			--       -- includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+			--       -- includeInlayPropertyDeclarationTypeHints = false,
+			--       -- includeInlayFunctionLikeReturnTypeHints = false,
+			--       includeInlayEnumMemberValueHints = true,
+			--     },
+			--   },
+			-- })
 
 			opts.servers.tailwindcss = vim.tbl_extend("force", opts.servers.tailwindcss, {
 				root_dir = function(...)
@@ -129,21 +101,41 @@ return {
 			-- table.insert(opts.ensure_installed, "alex")
 		end,
 	},
+
 	{
 		"nvimtools/none-ls.nvim",
-		enabled = true,
+		enabled = false,
+		dependencies = "davidmh/cspell.nvim",
 		opts = function(_, opts)
-			local nls = require("null-ls")
+			local cspell = require("cspell")
+			local cspell_config = {
+				diagnostics_postprocess = function(diagnostic)
+					diagnostic.severity = vim.diagnostic.severity["HINT"] -- ERROR, WARN, INFO, HINT
+				end,
+				config = {
+					-- find_json = function(_)
+					--   return vim.fn.expand("~/.config/nvim/cspell.json")
+					--   -- return "/home/taiga/.config/nvim/cspell.json"
+					-- end,
+					on_success = function(cspell_config_file_path, params, action_name)
+						if action_name == "add_to_json" then
+							os.execute(
+								string.format(
+									"cat %s | jq -S '.words |= sort' | tee %s > /dev/null",
+									cspell_config_file_path,
+									cspell_config_file_path
+								)
+							)
+						end
+					end,
+				},
+			}
 
 			opts.root_dir = require("null-ls.utils").root_pattern(".git")
 
 			opts.sources = vim.list_extend(opts.sources, {
-				nls.builtins.code_actions.cspell,
-				nls.builtins.diagnostics.cspell.with({
-					diagnostics_postprocess = function(diagnostic)
-						diagnostic.severity = vim.diagnostic.severity.HINT
-					end,
-				}),
+				cspell.diagnostics.with(cspell_config),
+				cspell.code_actions.with(cspell_config),
 			})
 		end,
 	},
@@ -167,10 +159,8 @@ return {
 					virtual_text = true,
 				},
 			})
-			-- vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
-			-- vim.keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>")
-			vim.keymap.set("n", "<leader>ol", "<cmd>Lspsaga outline<CR>")
-			vim.keymap.set("n", "gpd", "<cmd>Lspsaga finder<CR>")
+			vim.keymap.set("n", "T", "<cmd>Lspsaga outline<CR>")
+			vim.keymap.set("n", "gF", "<cmd>Lspsaga finder<CR>")
 		end,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter", -- optional
@@ -179,12 +169,6 @@ return {
 	},
 
 	-- configure lsp easy
-	{
-		"tamago324/nlsp-settings.nvim",
-		enabled = true,
-		cmd = "LspSettings",
-		opts = {},
-	},
 	{
 		"dnlhc/glance.nvim",
 		event = "LspAttach",
@@ -268,31 +252,8 @@ return {
 	},
 
 	{
-		"mhartington/formatter.nvim",
-		cmd = "Format",
-		config = function()
-			require("formatter").setup({
-				filetype = {
-					zsh = {
-						function()
-							return {
-								exe = "shfmt",
-								args = { "-i", "2", "-ci" },
-								stdin = true,
-							}
-						end,
-					},
-				},
-				["*"] = {
-					-- "formatter.filetypes.any" defines default configurations for any
-					-- filetype
-					require("formatter.filetypes.any").remove_trailing_whitespace,
-				},
-			})
-		end,
-	},
-	{
 		"simrat39/symbols-outline.nvim",
+		enabled = false,
 		cmd = { "SymbolsOutline", "SymbolsOutlineOpen", "SymbolsOutlineClose" },
 		keys = {
 			{ "<leader>T", "<cmd>SymbolsOutline<CR>", "SymbolsOutline" },
@@ -366,7 +327,7 @@ return {
 	},
 	{
 		"js-everts/cmp-tailwind-colors",
-		event = "LspAttach",
+		event = "VeryLazy",
 		config = function()
 			require("cmp-tailwind-colors").setup({
 				enable_alpha = true, -- requires pumblend > 0.

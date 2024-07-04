@@ -1,3 +1,9 @@
+-- 根据提供的代码，这个文件的功能是配置和设置一些与包管理器和依赖项相关的信息。它使用了两个插件：vuki656/package-info.nvim和nvim-telescope/telescope.nvim。
+-- 首先，通过调用require("package-info").setup({...})来设置package-info插件的配置选项。这些选项包括包管理器类型、颜色设置和图标设置等。然后，通过调用require("telescope").setup({...})来设置telescope插件的配置选项。这些选项包括扩展和主题设置等。
+-- 接下来，通过调用require("telescope").load_extension("package_info")来加载telescope插件的package_info扩展。
+-- 然后，通过调用vim.keymap.set({...})来设置一些按键映射。这些按键映射定义了一些操作，如更新依赖项、删除依赖项、安装新的依赖项和安装不同版本的依赖项。
+-- 总结起来，这个文件的功能是配置和设置包管理器和依赖项相关的信息，并提供了一些按键映射来执行相应的操作。
+
 return {
   {
     "vuki656/package-info.nvim",
