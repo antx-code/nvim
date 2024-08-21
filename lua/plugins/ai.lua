@@ -10,41 +10,41 @@
 
 return {
 
-    {
-      "jackMort/ChatGPT.nvim",
-      event = "VeryLazy",
-      commit = "2107f7037c775bf0b9bff9015eed68929fcf493e",
-      config = function()
-        local home = vim.fn.expand("$HOME")
-        require("chatgpt").setup({
-          api_key_cmd = "cat " .. home .. "/.openai.key",
-          openai_params = {
-            -- NOTE: model can be a function returning the model name
-            -- this is useful if you want to change the model on the fly
-            -- using commands
-            -- Example:
-            -- model = function()
-            --     if some_condition() then
-            --         return "gpt-4-1106-preview"
-            --     else
-            --         return "gpt-3.5-turbo"
-            --     end
-            -- end,
-            model = "gpt-3.5-turbo",
-            frequency_penalty = 0,
-            presence_penalty = 0,
-            max_tokens = 4095,
-            temperature = 0.2,
-            top_p = 0.1,
-            n = 1,
-          }
-        })
-      end,
-      dependencies = {
-        "MunifTanjim/nui.nvim",
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim",
-      },
-    },
-  }
-  
+	{
+		"jackMort/ChatGPT.nvim",
+		event = "VeryLazy",
+		commit = "2107f7037c775bf0b9bff9015eed68929fcf493e",
+		config = function()
+			local home = vim.fn.expand("$HOME")
+			require("chatgpt").setup({
+				api_key_cmd = "cat " .. home .. "/.openai.key",
+				api_host_cmd = "cat " .. home .. "/.openai.host",
+				openai_params = {
+					-- NOTE: model can be a function returning the model name
+					-- this is useful if you want to change the model on the fly
+					-- using commands
+					-- Example:
+					-- model = function()
+					--     if some_condition() then
+					--         return "gpt-4-1106-preview"
+					--     else
+					--         return "gpt-3.5-turbo"
+					--     end
+					-- end,
+					model = "gpt-4o-mini",
+					frequency_penalty = 0,
+					presence_penalty = 0,
+					max_tokens = 4095,
+					temperature = 0.2,
+					top_p = 0.1,
+					n = 1,
+				},
+			})
+		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
+	},
+}
