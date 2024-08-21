@@ -65,9 +65,9 @@ return {
         ignore_whitespace = false,
         relative_time = true,
       }
-      opt.current_line_blame_formatter_opts = {
-        relative_time = true,
-      }
+      -- opt.current_line_blame_formatter_opts = {
+      --   relative_time = true,
+      -- }
 
       -- opt.current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>"
       opt.sign_priority = 0
