@@ -34,7 +34,7 @@ return {
   },
 
   {
-    "https://git.sr.ht/~reggie/licenses.nvim",
+    "https://git.sr.ht/~ashie/licenses.nvim",
     cmd = {
       "LicenseInsert",
       "LicenseFetch",

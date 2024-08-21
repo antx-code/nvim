@@ -116,7 +116,7 @@ return {
     },
   },
   {
-    "dressing.nvim",
+    "stevearc/dressing.nvim",
     opts = {
       input = {
         win_options = {
