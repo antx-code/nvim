@@ -24,11 +24,10 @@ return {
 			ensure_installed = {
 				"lua_ls",
 				"bashls",
-				"jsonls",
 				"pyright",
+				"ruff",
 				"rust_analyzer",
 				"gopls",
-				"eslint",
 				"yamlls",
 				"dockerls",
 				"tsserver",

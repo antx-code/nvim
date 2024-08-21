@@ -11,6 +11,7 @@ return {
       "MarkdownPreviewStop",
       "MarkdownPreviewToggle",
     },
+    ft = { "markdown" },
     config = function()
       vim.fn["mkdp#util#install"]()
     end,
