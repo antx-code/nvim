@@ -22,17 +22,26 @@ return {
 		})
 		require("mason-lspconfig").setup({
 			ensure_installed = {
-				"lua_ls",
+				"ast_grep",
 				"bashls",
+				"clangd",
+				"cmake",
+				"dockerls",
+				"docker_compose_language_service",
+				"gopls",
+				"rome",
+				"tailwindcss",
+				"ltex",
+				"lua_ls",
+				"grammarly",
+				"matlab_ls",
+				"textlsp",
 				"pyright",
 				"ruff",
 				"rust_analyzer",
-				"gopls",
-				"yamlls",
-				"dockerls",
 				"tsserver",
-				"clangd",
-				"taplo"
+				"taplo",
+				"yamlls",
 			},
 			automatic_installation = true,
 		})

@@ -60,7 +60,7 @@ return {
 			--   enabled = false,
 			-- }
 
-			opts.servers.tsserver = vim.tbl_extend("force", opts.servers.tsserver, {
+			opts.servers.tsserver = vim.tbl_extend("force", opts.servers.tsserver or {}, {
 				root_dir = function(fname)
 					local util = require("lspconfig.util")
 					return util.root_pattern(".git")(fname)
